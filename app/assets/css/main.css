@@ -35,6 +35,13 @@
   color: #1f2933;
 }
 
+[data-theme="dark"] {
+  background: radial-gradient(circle at 15% 20%, #0f172a 0, #0f172a 30%, transparent 35%),
+    radial-gradient(circle at 80% 0%, #0b3a2c 0, #0b3a2c 35%, transparent 45%),
+    linear-gradient(180deg, #0f172a 0%, #0b1a24 60%, #0a161e 100%);
+  color: #e5e7eb;
+}
+
 body {
   background: transparent;
 }
@@ -44,4 +51,18 @@ body {
   box-shadow: 0 15px 40px rgba(31, 41, 55, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .glass-card {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+}
+
+.hero-card {
+  background: linear-gradient(135deg, #fff7ec 0%, #f0fff4 50%, #e8f5ff 100%);
+}
+
+[data-theme="dark"] .hero-card {
+  background: linear-gradient(135deg, #0f172a 0%, #0c2d25 50%, #0d2033 100%);
 }

@@ -6,6 +6,12 @@ import { useRecipes } from '~/composables/useRecipes';
 const route = useRoute();
 const router = useRouter();
 const { getBySlug } = useRecipes();
+const baseURL = useRuntimeConfig().app.baseURL || '/';
+const withBase = (path: string) => {
+  const cleanBase = baseURL.endsWith('/') ? baseURL.slice(0, -1) : baseURL;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${cleanBase}${cleanPath}`;
+};
 
 const slug = computed(() => route.params.slug as string);
 const recipe = computed(() => getBySlug(slug.value));
@@ -49,10 +55,11 @@ watchEffect(() => {
       <div class="space-y-6">
         <UCard class="glass-card border-none shadow-lg p-0 overflow-hidden">
           <div class="relative h-64">
-            <img :src="recipe.image" :alt="recipe.name" class="h-full w-full object-cover mix-blend-multiply">
+            <img :src="withBase(recipe.image)" :alt="recipe.name" class="h-full w-full object-cover mix-blend-multiply">
             <div class="absolute inset-0 bg-white/15" />
           </div>
-        </UCard> <!-- Ingredientes -->
+        </UCard>
+        <!-- Ingredientes -->
         <UCard class="glass-card border-none shadow-lg">
           <h2 class="text-xl font-semibold mb-3">
             Ingredientes

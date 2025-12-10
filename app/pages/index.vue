@@ -4,17 +4,24 @@ import { useRecipes } from '~/composables/useRecipes';
 import type { RecipeCategory } from '~/types/recipe';
 
 const { allRecipes, categories } = useRecipes();
+const baseURL = useRuntimeConfig().app.baseURL || '/';
+const withBase = (path: string) => {
+  const cleanBase = baseURL.endsWith('/') ? baseURL.slice(0, -1) : baseURL;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${cleanBase}${cleanPath}`;
+};
 
 const searchName = ref('');
 const searchIngredient = ref('');
 const selectedCategory = ref<RecipeCategory | ''>('');
 const sortBy = ref<'rating' | 'newest' | 'name'>('rating');
-interface SortOptions {
+
+interface SortOption {
   label: string;
   value: 'rating' | 'newest' | 'name';
-};
+}
 
-const sortOptions: SortOptions[] = [
+const sortOptions: SortOption[] = [
   { label: 'Mejor calificación', value: 'rating' },
   { label: 'Más recientes', value: 'newest' },
   { label: 'Nombre A-Z', value: 'name' }
@@ -82,17 +89,16 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
 <template>
   <UContainer class="py-10 space-y-8">
     <header class="grid gap-6 md:grid-cols-[1.5fr,1fr] items-center">
-      <UCard class="glass-card p-6 bg-linear-to-r from-primary-50 to-amber-50 border-none shadow-lg">
+      <UCard class="glass-card p-6 hero-card border-none shadow-lg">
         <div class="space-y-3">
           <p class="text-sm uppercase tracking-wide text-primary-700">
             Recetario estético
           </p>
-          <h1 class="text-3xl font-bold text-primary-900">
+          <h1 class="text-3xl font-bold text-primary-900 dark:text-primary-50">
             Recetas sin gluten
           </h1>
-          <p class="text-gray-600 text-base">
-            Explorá recetas 100% sin gluten, filtrá por categoría e ingredientes
-            y descubrí nuevas ideas deliciosas.
+          <p class="text-gray-600 dark:text-gray-200 text-base">
+            Explorá recetas 100% sin gluten, filtrá por categoría e ingredientes y descubrí nuevas ideas deliciosas.
           </p>
           <div class="flex flex-wrap gap-2">
             <UBadge color="success" variant="soft"> Filtrado avanzado </UBadge>
@@ -105,33 +111,58 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
       <!-- Filtros -->
       <UCard class="glass-card border-none shadow-lg">
         <div class="grid gap-4">
-          <h2 class="text-sm uppercase tracking-wide text-gray-500">Filtros</h2>
+          <h2 class="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-300">
+            Filtros
+          </h2>
           <div class="grid gap-3">
             <div class="grid gap-3 md:grid-cols-[2fr,1fr]">
               <div class="space-y-1">
-                <p class="text-xs font-semibold text-gray-500">
+                <p class="text-xs font-semibold text-gray-500 dark:text-gray-300">
                   Nombre / descripción
                 </p>
-                <UInput v-model="searchName" placeholder="Ej: pizza, pan, tarta..." icon="i-lucide-search" />
+                <UInput
+                  v-model="searchName"
+                  placeholder="Ej: pizza, pan, tarta..."
+                  icon="i-lucide-search"
+                />
               </div>
               <div class="space-y-1">
-                <p class="text-xs font-semibold text-gray-500">Ordenar</p>
-                <USelectMenu v-model="sortBy" :options="sortOptions" placeholder="Elegí el orden"
-                  icon="i-lucide-sort-desc" :searchable="false" />
+                <p class="text-xs font-semibold text-gray-500 dark:text-gray-300">
+                  Ordenar
+                </p>
+                <USelectMenu
+                  v-model="sortBy"
+                  :options="sortOptions"
+                  placeholder="Elegí el orden"
+                  icon="i-lucide-sort-desc"
+                  :searchable="false"
+                />
               </div>
             </div>
 
             <div class="grid gap-3 md:grid-cols-3">
               <div class="space-y-1">
-                <p class="text-xs font-semibold text-gray-500">Categoría</p>
-                <USelectMenu v-model="selectedCategory" :options="categoryOptions" placeholder="Todas"
-                  icon="i-lucide-filter" :searchable="false" />
+                <p class="text-xs font-semibold text-gray-500 dark:text-gray-300">
+                  Categoría
+                </p>
+                <USelectMenu
+                  v-model="selectedCategory"
+                  :options="categoryOptions"
+                  placeholder="Todas"
+                  icon="i-lucide-filter"
+                  :searchable="false"
+                />
               </div>
 
               <div class="space-y-1 md:col-span-2">
-                <p class="text-xs font-semibold text-gray-500">Ingrediente</p>
-                <UInput v-model="searchIngredient" placeholder="Ej: arroz, pollo, zanahoria..."
-                  icon="i-lucide-sparkles" />
+                <p class="text-xs font-semibold text-gray-500 dark:text-gray-300">
+                  Ingrediente
+                </p>
+                <UInput
+                  v-model="searchIngredient"
+                  placeholder="Ej: arroz, pollo, zanahoria..."
+                  icon="i-lucide-sparkles"
+                />
               </div>
             </div>
           </div>
@@ -141,17 +172,30 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
 
     <!-- Listado -->
     <section>
-      <div v-if="paginatedRecipes.length === 0" class="py-20 text-center text-gray-500">
+      <div
+        v-if="paginatedRecipes.length === 0"
+        class="py-20 text-center text-gray-500"
+      >
         No se encontraron recetas con esos filtros.
       </div>
 
-      <div v-else class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        <UCard v-for="recipe in paginatedRecipes" :key="recipe.id"
-          class="flex flex-col glass-card border-none shadow-lg hover:-translate-y-1 transition-transform duration-200">
+      <div
+        v-else
+        class="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+      >
+        <UCard
+          v-for="recipe in paginatedRecipes"
+          :key="recipe.id"
+          class="flex flex-col glass-card border-none shadow-lg hover:-translate-y-1 transition-transform duration-200"
+        >
           <template #header>
-            <div class="relative h-40 w-full overflow-hidden rounded-lg bg-linear-to-r from-primary-100 to-emerald-100">
-              <img :src="recipe.image" :alt="recipe.name" class="h-full w-full object-cover mix-blend-multiply">
-              <div class="absolute inset-0 bg-white/20" />
+            <div class="relative h-40 w-full overflow-hidden rounded-lg bg-gradient-to-r from-primary-100 to-emerald-100 dark:from-slate-800 dark:to-slate-700">
+              <img
+                :src="withBase(recipe.image)"
+                :alt="recipe.name"
+                class="h-full w-full object-cover mix-blend-multiply"
+              >
+              <div class="absolute inset-0 bg-white/20 dark:bg-black/20" />
             </div>
           </template>
 
@@ -163,13 +207,18 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
               <UBadge color="success" variant="soft">
                 {{ recipe.category }}
               </UBadge>
-              <UBadge v-if="recipe.rating" color="warning" variant="soft" class="flex items-center gap-1">
+              <UBadge
+                v-if="recipe.rating"
+                color="warning"
+                variant="soft"
+                class="flex items-center gap-1"
+              >
                 <UIcon name="i-lucide-star" />
                 {{ recipe.rating.toFixed(1) }}
               </UBadge>
             </div>
 
-            <p class="text-sm text-gray-500 line-clamp-3">
+            <p class="text-sm text-gray-500 dark:text-gray-300 line-clamp-3">
               {{ recipe.description || 'Receta sin descripción.' }}
             </p>
           </div>
@@ -192,13 +241,20 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
     </section>
 
     <!-- Paginación -->
-    <section v-if="totalPages > 1" class="flex justify-center">
-      <UPagination v-model="page" :page-count="pageSize" :total="filteredRecipes.length" />
+    <section
+      v-if="totalPages > 1"
+      class="flex justify-center"
+    >
+      <UPagination
+        v-model="page"
+        :page-count="pageSize"
+        :total="filteredRecipes.length"
+      />
     </section>
 
     <!-- Link al creador -->
-    <footer class="pt-8 border-t border-gray-200 flex justify-between items-center">
-      <span class="text-sm text-gray-500">
+    <footer class="pt-8 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
+      <span class="text-sm text-gray-500 dark:text-gray-300">
         ¿Tenés una receta nueva?
       </span>
       <NuxtLink to="/recetas/crear">
