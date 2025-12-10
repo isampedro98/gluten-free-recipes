@@ -9,7 +9,12 @@ export default defineNuxtConfig({
     enabled: true
   },
 
+  nitro: {
+    preset: 'github-pages'
+  },
+
   app: {
+    baseURL: '/gluten-free-recipes/', // nombre EXACTO del repo
     head: {
       title: 'Recetas sin gluten',
       meta: [
