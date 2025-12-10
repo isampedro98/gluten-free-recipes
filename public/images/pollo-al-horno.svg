@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" role="img" aria-label="Pollo al horno con papas">
+  <defs>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="360" fill="url(#g2)" />
+  <g fill="#fff7ed" fill-opacity="0.8">
+    <ellipse cx="200" cy="190" rx="120" ry="70" />
+    <ellipse cx="330" cy="170" rx="80" ry="60" />
+    <ellipse cx="380" cy="220" rx="110" ry="60" />
+  </g>
+  <text x="50%" y="55%" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="36" fill="#7c2d12">
+    Pollo al horno
+  </text>
+  <text x="50%" y="65%" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="20" fill="#7c2d12">
+    con papas
+  </text>
+</svg>

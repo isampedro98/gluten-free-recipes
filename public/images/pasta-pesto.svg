@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" role="img" aria-label="Pasta sin gluten al pesto">
+  <defs>
+    <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#bbf7d0"/>
+      <stop offset="100%" stop-color="#22c55e"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="360" fill="url(#g3)" />
+  <g stroke="#15803d" stroke-width="8" stroke-linecap="round">
+    <path d="M120 120c80 40 180 40 260 0" fill="none" />
+    <path d="M140 200c90-30 190-20 250 20" fill="none" />
+    <path d="M100 250c100 10 220-10 320-50" fill="none" />
+  </g>
+  <text x="50%" y="55%" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="34" fill="#064e3b">
+    Pasta al pesto
+  </text>
+  <text x="50%" y="65%" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="18" fill="#064e3b">
+    sin gluten
+  </text>
+</svg>

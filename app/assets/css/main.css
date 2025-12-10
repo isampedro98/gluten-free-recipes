@@ -1,0 +1,47 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+  --font-sans: 'Public Sans', 'DM Sans', system-ui, sans-serif;
+
+  /* Pastel palette */
+  --color-primary-50: #f3fbf5;
+  --color-primary-100: #d7f3e1;
+  --color-primary-200: #b5e9cb;
+  --color-primary-300: #8adcb2;
+  --color-primary-400: #5ccb97;
+  --color-primary-500: #2ab97e;
+  --color-primary-600: #1c9b68;
+  --color-primary-700: #157954;
+  --color-primary-800: #115f44;
+  --color-primary-900: #0e4c38;
+
+  --color-neutral-50: #f8fafb;
+  --color-neutral-100: #edf1f5;
+  --color-neutral-200: #dfe6ed;
+  --color-neutral-300: #c5d3df;
+  --color-neutral-400: #9db3c5;
+  --color-neutral-500: #6f8aa3;
+  --color-neutral-600: #4f6c87;
+  --color-neutral-700: #3f566b;
+  --color-neutral-800: #324556;
+  --color-neutral-900: #263543;
+}
+
+:root {
+  background: radial-gradient(circle at 20% 20%, #fdf7ec 0, #fdf7ec 30%, transparent 40%),
+    radial-gradient(circle at 80% 0%, #e9f9f1 0, #e9f9f1 35%, transparent 45%),
+    linear-gradient(180deg, #f8fafc 0%, #eef4f8 60%, #e8f1f7 100%);
+  color: #1f2933;
+}
+
+body {
+  background: transparent;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 15px 40px rgba(31, 41, 55, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+}
