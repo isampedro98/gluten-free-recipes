@@ -52,24 +52,7 @@ watchEffect(() => {
             <img :src="recipe.image" :alt="recipe.name" class="h-full w-full object-cover mix-blend-multiply">
             <div class="absolute inset-0 bg-white/15" />
           </div>
-        </UCard>
-
-        <UCard class="glass-card border-none shadow-lg">
-          <section class="space-y-3">
-            <h2 class="text-xl font-semibold">
-              Pasos
-            </h2>
-            <ol class="space-y-2 list-decimal list-inside text-gray-700">
-              <li v-for="step in recipe.steps" :key="step.order">
-                {{ step.text }}
-              </li>
-            </ol>
-          </section>
-        </UCard>
-      </div>
-
-      <!-- Ingredientes -->
-      <section class="space-y-3">
+        </UCard> <!-- Ingredientes -->
         <UCard class="glass-card border-none shadow-lg">
           <h2 class="text-xl font-semibold mb-3">
             Ingredientes
@@ -83,6 +66,20 @@ watchEffect(() => {
               </span>
             </li>
           </ul>
+        </UCard>
+      </div>
+      <section class="space-y-3">
+        <UCard class="glass-card border-none shadow-lg">
+          <section class="space-y-3">
+            <h2 class="text-xl font-semibold">
+              Pasos
+            </h2>
+            <ol class="space-y-2 list-decimal list-inside text-gray-700">
+              <li v-for="step in recipe.steps" :key="step.order">
+                {{ step.text }}
+              </li>
+            </ol>
+          </section>
         </UCard>
 
         <UCard class="glass-card border-none shadow-lg text-xs text-gray-500 space-y-2">
