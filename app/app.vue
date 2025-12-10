@@ -31,7 +31,10 @@ useSeoMeta({
       <template #left>
         <NuxtLink to="/">
           <div class="flex items-center gap-2 font-semibold text-lg">
-            <UIcon name="i-simple-icons-nuxtdotjs" class="text-primary-500" />
+            <UIcon
+              name="i-simple-icons-nuxtdotjs"
+              class="text-primary-500"
+            />
             <span>Recetas sin gluten</span>
           </div>
         </NuxtLink>
@@ -40,7 +43,11 @@ useSeoMeta({
       <template #right>
         <UColorModeButton />
 
-        <UButton to="/recetas/crear" icon="i-lucide-plus" size="sm">
+        <UButton
+          to="/recetas/crear"
+          icon="i-lucide-plus"
+          size="sm"
+        >
           Crear receta
         </UButton>
       </template>
@@ -58,7 +65,13 @@ useSeoMeta({
       </template>
 
       <template #right>
-        <UButton to="/" variant="ghost" color="neutral" size="sm" icon="i-lucide-home">
+        <UButton
+          to="/"
+          variant="ghost"
+          color="neutral"
+          size="sm"
+          icon="i-lucide-home"
+        >
           Inicio
         </UButton>
       </template>
