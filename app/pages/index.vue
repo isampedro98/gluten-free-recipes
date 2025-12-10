@@ -1,78 +1,78 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useRecipes } from '~/composables/useRecipes';
-import type { RecipeCategory } from '~/types/recipe';
+import { computed, ref, watch } from 'vue'
+import { useRecipes } from '~/composables/useRecipes'
+import type { RecipeCategory } from '~/types/recipe'
 
-const { allRecipes, categories } = useRecipes();
+const { allRecipes, categories } = useRecipes()
 
-const searchName = ref('');
-const searchIngredient = ref('');
-const selectedCategory = ref<RecipeCategory | ''>('');
-const sortBy = ref<'rating' | 'newest' | 'name'>('rating');
+const searchName = ref('')
+const searchIngredient = ref('')
+const selectedCategory = ref<RecipeCategory | ''>('')
+const sortBy = ref<'rating' | 'newest' | 'name'>('rating')
 
-const sortOptions: { label: string; value: 'rating' | 'newest' | 'name' }[] = [
+const sortOptions: { label: string, value: 'rating' | 'newest' | 'name' }[] = [
   { label: 'Mejor calificación', value: 'rating' },
   { label: 'Más recientes', value: 'newest' },
   { label: 'Nombre A-Z', value: 'name' }
-];
+]
 
 const categoryOptions = computed(() => [
   { label: 'Todas', value: '' },
   ...categories.value.map(cat => ({ label: cat, value: cat }))
-]);
+])
 
-const page = ref(1);
-const pageSize = 6;
+const page = ref(1)
+const pageSize = 6
 
 const filteredRecipes = computed(() => {
-  const name = searchName.value.trim().toLowerCase();
-  const ing = searchIngredient.value.trim().toLowerCase();
-  const cat = selectedCategory.value;
+  const name = searchName.value.trim().toLowerCase()
+  const ing = searchIngredient.value.trim().toLowerCase()
+  const cat = selectedCategory.value
 
   return allRecipes.value.filter(recipe => {
     const matchesName =
       !name ||
       recipe.name.toLowerCase().includes(name) ||
-      (recipe.description ?? '').toLowerCase().includes(name);
+      (recipe.description ?? '').toLowerCase().includes(name)
 
-    const matchesCategory = !cat || recipe.category === cat;
+    const matchesCategory = !cat || recipe.category === cat
 
     const matchesIngredient =
       !ing ||
-      recipe.ingredients.some(ingredient => ingredient.name.toLowerCase().includes(ing));
+      recipe.ingredients.some(ingredient => ingredient.name.toLowerCase().includes(ing))
 
-    return matchesName && matchesCategory && matchesIngredient;
-  });
-});
+    return matchesName && matchesCategory && matchesIngredient
+  })
+})
 
 const orderedRecipes = computed(() => {
-  const list = [...filteredRecipes.value];
+  const list = [...filteredRecipes.value]
 
   if (sortBy.value === 'rating') {
-    return list.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+    return list.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
   }
 
   if (sortBy.value === 'newest') {
     return list.sort(
       (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    )
   }
 
-  return list.sort((a, b) => a.name.localeCompare(b.name));
-});
+  return list.sort((a, b) => a.name.localeCompare(b.name))
+})
 
 const paginatedRecipes = computed(() => {
-  const start = (page.value - 1) * pageSize;
-  return orderedRecipes.value.slice(start, start + pageSize);
-});
+  const start = (page.value - 1) * pageSize
+  return orderedRecipes.value.slice(start, start + pageSize)
+})
 
 const totalPages = computed(() =>
   Math.max(1, Math.ceil(filteredRecipes.value.length / pageSize))
-);
+)
 
 watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
-  page.value = 1;
-});
+  page.value = 1
+})
 </script>
 
 <template>

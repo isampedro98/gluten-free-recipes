@@ -26,11 +26,12 @@ watchEffect(() => {
             {{ recipe.name }}
           </h1>
           <div class="flex items-center gap-2 flex-wrap">
-            <UBadge color="green" variant="soft">
+            <UBadge color="success" variant="soft">
               {{ recipe.category }}
             </UBadge>
-            <UBadge v-if="recipe.rating" color="orange" variant="soft" class="flex items-center gap-1">
-              <UIcon name="i-lucide-star" /> {{ recipe.rating.toFixed(1) }}
+            <UBadge v-if="recipe.rating" color="warning" variant="soft" class="flex items-center gap-1">
+              <UIcon name="i-lucide-star" />
+              {{ recipe.rating.toFixed(1) }}
             </UBadge>
           </div>
         </div>
@@ -48,11 +49,7 @@ watchEffect(() => {
       <div class="space-y-6">
         <UCard class="glass-card border-none shadow-lg p-0 overflow-hidden">
           <div class="relative h-64">
-            <img
-              :src="recipe.image"
-              :alt="recipe.name"
-              class="h-full w-full object-cover mix-blend-multiply"
-            >
+            <img :src="recipe.image" :alt="recipe.name" class="h-full w-full object-cover mix-blend-multiply">
             <div class="absolute inset-0 bg-white/15" />
           </div>
         </UCard>
@@ -63,10 +60,7 @@ watchEffect(() => {
               Pasos
             </h2>
             <ol class="space-y-2 list-decimal list-inside text-gray-700">
-              <li
-                v-for="step in recipe.steps"
-                :key="step.order"
-              >
+              <li v-for="step in recipe.steps" :key="step.order">
                 {{ step.text }}
               </li>
             </ol>
@@ -81,11 +75,8 @@ watchEffect(() => {
             Ingredientes
           </h2>
           <ul class="space-y-3">
-            <li
-              v-for="ingredient in recipe.ingredients"
-              :key="ingredient.name"
-              class="flex items-start justify-between gap-3"
-            >
+            <li v-for="ingredient in recipe.ingredients" :key="ingredient.name"
+              class="flex items-start justify-between gap-3">
               <span class="font-medium">{{ ingredient.name }}</span>
               <span class="text-sm text-gray-500">
                 {{ ingredient.quantity }}<span v-if="ingredient.unit"> {{ ingredient.unit }}</span>
@@ -102,20 +93,14 @@ watchEffect(() => {
         <UCard class="glass-card border-none shadow-lg space-y-3">
           <div class="flex items-center gap-2">
             <h3 class="text-lg font-semibold">Tu calificación</h3>
-            <UBadge variant="soft" color="orange" class="flex items-center gap-1">
+            <UBadge variant="soft" color="warning" class="flex items-center gap-1">
               <UIcon name="i-lucide-star" />
               {{ userRating ?? '—' }}
             </UBadge>
           </div>
           <div class="flex gap-2">
-            <UButton
-              v-for="n in 5"
-              :key="n"
-              :color="userRating && userRating >= n ? 'orange' : 'neutral'"
-              variant="ghost"
-              icon="i-lucide-star"
-              @click="userRating = n"
-            >
+            <UButton v-for="n in 5" :key="n" :color="userRating && userRating >= n ? 'warning' : 'neutral'"
+              variant="ghost" icon="i-lucide-star" @click="userRating = n">
               {{ n }}
             </UButton>
           </div>

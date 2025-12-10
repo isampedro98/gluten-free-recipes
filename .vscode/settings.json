@@ -1,0 +1,9 @@
+{
+  "eslint.experimental.useFlatConfig": true,
+  "eslint.validate": ["javascript", "typescript", "vue"],
+  "eslint.rules.customizations": [
+    { "rule": "@stylistic/semi", "severity": "off" }
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
+}
