@@ -1,16 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: {
-    enabled: true
-  },
 
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui'
   ],
-
-  nitro: {
-    preset: 'github-pages'
+  devtools: {
+    enabled: true
   },
 
   app: {
@@ -30,6 +26,9 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: '2025-01-15',
+  nitro: {
+    preset: 'github-pages'
+  },
 
   eslint: {
     config: {
