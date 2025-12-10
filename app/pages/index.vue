@@ -9,8 +9,12 @@ const searchName = ref('');
 const searchIngredient = ref('');
 const selectedCategory = ref<RecipeCategory | ''>('');
 const sortBy = ref<'rating' | 'newest' | 'name'>('rating');
+interface SortOptions {
+  label: string;
+  value: 'rating' | 'newest' | 'name';
+};
 
-const sortOptions: { label: string, value: 'rating' | 'newest' | 'name' }[] = [
+const sortOptions: SortOptions[] = [
   { label: 'Mejor calificación', value: 'rating' },
   { label: 'Más recientes', value: 'newest' },
   { label: 'Nombre A-Z', value: 'name' }

@@ -87,40 +87,17 @@ function generateJson() {
     <UCard class="glass-card border-none shadow-lg">
       <form class="space-y-8" @submit.prevent="generateJson">
         <section class="grid gap-4 md:grid-cols-2">
-          <UInput
-            v-model="name"
-            label="Nombre"
-            placeholder="Ej: Tarta de manzana"
-            required
-          />
-          <UInput
-            v-model="slug"
-            label="Slug (opcional)"
-            placeholder="ej: tarta-manzana"
-            hint="Si lo dejas vacío se genera desde el nombre"
-          />
-          <USelectMenu
-            v-model="category"
-            :options="[
-              ...categories.map(c => ({ label: c, value: c })),
-              { label: 'otros', value: 'otros' }
-            ]"
-            label="Categoría"
-            placeholder="Seleccioná una categoría"
-            required
-          />
-          <UInput
-            v-model="image"
-            label="Ruta de imagen"
-            placeholder="/images/mi-receta.jpg"
-          />
+          <UInput v-model="name" label="Nombre" placeholder="Ej: Tarta de manzana" required />
+          <UInput v-model="slug" label="Slug (opcional)" placeholder="ej: tarta-manzana"
+            hint="Si lo dejas vacío se genera desde el nombre" />
+          <USelectMenu v-model="category" :options="[
+            ...categories.map(c => ({ label: c, value: c })),
+            { label: 'otros', value: 'otros' }
+          ]" label="Categoría" placeholder="Seleccioná una categoría" required />
+          <UInput v-model="image" label="Ruta de imagen" placeholder="/images/mi-receta.jpg" />
         </section>
 
-        <UTextarea
-          v-model="description"
-          label="Descripción"
-          placeholder="Breve descripción de la receta"
-        />
+        <UTextarea v-model="description" label="Descripción" placeholder="Breve descripción de la receta" />
 
         <!-- Ingredientes -->
         <section class="space-y-4">
@@ -128,35 +105,19 @@ function generateJson() {
             <h2 class="text-xl font-semibold">
               Ingredientes
             </h2>
-            <UButton
-              size="xs"
-              color="neutral"
-              icon="i-lucide-plus"
-              type="button"
-              @click="addIngredient"
-            >
+            <UButton size="xs" color="neutral" icon="i-lucide-plus" type="button" @click="addIngredient">
               Agregar
             </UButton>
           </div>
 
           <div class="space-y-3">
-            <div
-              v-for="(ingredient, index) in ingredients"
-              :key="index"
-              class="grid gap-3 md:grid-cols-[2fr,1fr,1fr,auto] items-end"
-            >
+            <div v-for="(ingredient, index) in ingredients" :key="index"
+              class="grid gap-3 md:grid-cols-[2fr,1fr,1fr,auto] items-end">
               <UInput v-model="ingredient.name" label="Nombre" placeholder="Harina de arroz" />
               <UInput v-model="ingredient.quantity" label="Cantidad" placeholder="1" />
               <UInput v-model="ingredient.unit" label="Unidad" placeholder="taza, g, cda..." />
-              <UButton
-                v-if="ingredients.length > 1"
-                size="xs"
-                color="neutral"
-                variant="ghost"
-                icon="i-lucide-trash"
-                type="button"
-                @click="removeIngredient(index)"
-              >
+              <UButton v-if="ingredients.length > 1" size="xs" color="neutral" variant="ghost" icon="i-lucide-trash"
+                type="button" @click="removeIngredient(index)">
                 Quitar
               </UButton>
             </div>
@@ -169,36 +130,20 @@ function generateJson() {
             <h2 class="text-xl font-semibold">
               Pasos
             </h2>
-            <UButton
-              size="xs"
-              color="neutral"
-              icon="i-lucide-plus"
-              type="button"
-              @click="addStep"
-            >
+            <UButton size="xs" color="neutral" icon="i-lucide-plus" type="button" @click="addStep">
               Agregar
             </UButton>
           </div>
 
           <div class="space-y-3">
-            <div
-              v-for="(step, index) in steps"
-              :key="index"
-              class="grid gap-3 md:grid-cols-[auto,1fr,auto] items-start"
-            >
+            <div v-for="(step, index) in steps" :key="index"
+              class="grid gap-3 md:grid-cols-[auto,1fr,auto] items-start">
               <span class="text-sm text-gray-500 pt-3">
                 Paso {{ index + 1 }}
               </span>
               <UTextarea v-model="step.text" placeholder="Describe el paso..." />
-              <UButton
-                v-if="steps.length > 1"
-                size="xs"
-                color="neutral"
-                variant="ghost"
-                icon="i-lucide-trash"
-                type="button"
-                @click="removeStep(index)"
-              >
+              <UButton v-if="steps.length > 1" size="xs" color="neutral" variant="ghost" icon="i-lucide-trash"
+                type="button" @click="removeStep(index)">
                 Quitar
               </UButton>
             </div>
@@ -217,12 +162,7 @@ function generateJson() {
       <h2 class="text-xl font-semibold">
         JSON generado
       </h2>
-      <UTextarea
-        :model-value="outputJson"
-        readonly
-        rows="12"
-        class="font-mono text-sm"
-      />
+      <UTextarea :model-value="outputJson" readonly :rows="12" class="font-mono text-sm" />
     </UCard>
   </UContainer>
 </template>
