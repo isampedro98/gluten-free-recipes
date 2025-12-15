@@ -185,69 +185,71 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
         v-else
         class="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
       >
-        <UCard
+        <NuxtLink
           v-for="recipe in paginatedRecipes"
           :key="recipe.id"
-          class="flex flex-col glass-card border-none shadow-lg hover:-translate-y-1 transition-transform duration-200"
+          :to="`/recetas/${recipe.slug}`"
+          class="block group"
         >
-          <template #header>
-            <div class="relative h-40 w-full overflow-hidden rounded-lg bg-gradient-to-r from-primary-100 to-emerald-100 dark:from-slate-800 dark:to-slate-700">
-              <img
-                :src="withBase(recipe.image || placeholderImage)"
-                :alt="recipe.name"
-                class="h-full w-full object-cover mix-blend-multiply"
-              >
-              <div class="absolute inset-0 bg-white/20 dark:bg-black/20" />
-            </div>
-          </template>
+          <UCard
+            class="flex flex-col glass-card border-none shadow-lg hover:-translate-y-1 transition-transform duration-200"
+          >
+            <template #header>
+              <div class="relative h-40 w-full overflow-hidden rounded-lg bg-gradient-to-r from-primary-100 to-emerald-100 dark:from-slate-800 dark:to-slate-700">
+                <img
+                  :src="withBase(recipe.image || placeholderImage)"
+                  :alt="recipe.name"
+                  class="h-full w-full object-cover mix-blend-multiply"
+                >
+                <div class="absolute inset-0 bg-white/20 dark:bg-black/20" />
+              </div>
+            </template>
 
-          <div class="space-y-2 flex-1">
-            <h2 class="text-xl font-semibold">
-              {{ recipe.name }}
-            </h2>
-            <div class="flex items-center gap-2">
-              <UBadge color="success" variant="soft">
-                {{ recipe.category }}
-              </UBadge>
-              <UBadge
-                v-if="recipe.rating"
-                color="warning"
-                variant="soft"
-                class="flex items-center gap-1"
-              >
-                <UIcon name="i-lucide-star" />
-                {{ recipe.rating.toFixed(1) }}
-              </UBadge>
+            <div class="space-y-2 flex-1">
+              <h2 class="text-xl font-semibold group-hover:underline">
+                {{ recipe.name }}
+              </h2>
+              <div class="flex items-center gap-2">
+                <UBadge color="success" variant="soft">
+                  {{ recipe.category }}
+                </UBadge>
+                <UBadge
+                  v-if="recipe.rating"
+                  color="warning"
+                  variant="soft"
+                  class="flex items-center gap-1"
+                >
+                  <UIcon name="i-lucide-star" />
+                  {{ recipe.rating.toFixed(1) }}
+                </UBadge>
+              </div>
+              <div class="flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-300">
+                <span v-if="recipe.totalTimeMinutes">
+                  ⏱️ {{ recipe.totalTimeMinutes }} min
+                </span>
+                <span v-else-if="recipe.cookTimeMinutes || recipe.prepTimeMinutes">
+                  ⏱️ {{ recipe.prepTimeMinutes || 0 }} prep / {{ recipe.cookTimeMinutes || 0 }} cocción
+                </span>
+                <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
+                <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
+              </div>
+              <p class="text-sm text-gray-500 dark:text-gray-300 line-clamp-3">
+                {{ recipe.description || 'Receta sin descripción.' }}
+              </p>
             </div>
-            <div class="flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-300">
-              <span v-if="recipe.totalTimeMinutes">
-                ⏱️ {{ recipe.totalTimeMinutes }} min
-              </span>
-              <span v-else-if="recipe.cookTimeMinutes || recipe.prepTimeMinutes">
-                ⏱️ {{ recipe.prepTimeMinutes || 0 }} prep / {{ recipe.cookTimeMinutes || 0 }} cocción
-              </span>
-              <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
-              <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
-            </div>
-            <p class="text-sm text-gray-500 dark:text-gray-300 line-clamp-3">
-              {{ recipe.description || 'Receta sin descripción.' }}
-            </p>
-          </div>
 
-          <template #footer>
-            <div class="flex justify-between items-center">
-              <span class="text-xs text-gray-400">
-                {{ recipe.ingredients.length }} ingredientes
-              </span>
-
-              <NuxtLink :to="`/recetas/${recipe.slug}`">
-                <UButton size="sm">
-                  Ver receta
-                </UButton>
-              </NuxtLink>
-            </div>
-          </template>
-        </UCard>
+            <template #footer>
+              <div class="flex justify-between items-center">
+                <span class="text-xs text-gray-400">
+                  {{ recipe.ingredients.length }} ingredientes
+                </span>
+                <span class="text-xs text-primary-600 dark:text-primary-200 group-hover:underline">
+                  Ver receta →
+                </span>
+              </div>
+            </template>
+          </UCard>
+        </NuxtLink>
       </div>
     </section>
 

@@ -380,6 +380,53 @@ export const recipes: Recipe[] = [
       type: 'external',
       url: 'https://glutendence.com/masa-empanada-gallega/'
     }
+  },
+  {
+    id: '10',
+    slug: 'tarta-manzana-almendra-sin-harina',
+    name: 'Tarta de manzana y almendra sin harina',
+    category: 'postres',
+    image: '/images/tarta-manzana-almendra-sin-harina.svg',
+    description: 'Tarta jugosa de manzana y almendra molida, sin harina y naturalmente sin gluten.',
+    rating: 4.8,
+    ingredients: [
+      { name: 'manzanas medianas', quantity: 3, unit: 'unidad (~300 g)', notes: 'peladas y ralladas' },
+      { name: 'almendra molida', quantity: 200, unit: 'g', notes: 'harina de almendra' },
+      { name: 'azúcar', quantity: 100, unit: 'g', notes: 'puede usarse panela o eritritol' },
+      { name: 'huevos grandes', quantity: 3, unit: 'unidad' },
+      { name: 'yogur natural o griego', quantity: 120, unit: 'g' },
+      { name: 'levadura en polvo', quantity: 1, unit: 'cdita', notes: 'polvo de hornear sin gluten' },
+      { name: 'canela en polvo', quantity: 1, unit: 'cdita' },
+      { name: 'ralladura de limón', quantity: 1, unit: 'unidad' },
+      { name: 'extracto de vainilla', quantity: 1, unit: 'cdita' },
+      { name: 'sal', quantity: '1 pizca', unit: '' },
+      { name: 'almendras laminadas', quantity: 'a gusto', unit: '', notes: 'opcional, para decorar' }
+    ],
+    steps: [
+      { order: 1, text: 'Precalentar el horno a 180 °C. Engrasar un molde redondo de 22 cm de diámetro y cubrir la base con papel vegetal.' },
+      { order: 2, text: 'En un bol grande, batir los huevos con el azúcar hasta obtener una mezcla espumosa y más clara.' },
+      { order: 3, text: 'Agregar el yogur, la ralladura de limón y el extracto de vainilla. Mezclar suavemente.' },
+      { order: 4, text: 'Incorporar la almendra molida, la levadura, la canela y la pizca de sal. Mezclar hasta lograr una masa cremosa y algo espesa.' },
+      { order: 5, text: 'Añadir la manzana rallada y mezclar con movimientos suaves hasta distribuirla de manera uniforme.' },
+      { order: 6, text: 'Verter la mezcla en el molde y, si se desea, decorar la superficie con almendras laminadas.' },
+      { order: 7, text: 'Hornear durante 35 a 40 minutos, hasta que al pinchar el centro con un palillo salga limpio o con pocas migas húmedas.' },
+      { order: 8, text: 'Retirar del horno y dejar enfriar unos 15 minutos antes de desmoldar.' }
+    ],
+    servingSuggestions: [
+      'Espolvorear con canela o azúcar glas.',
+      'Acompañar con yogur griego, nata ligera o helado de vainilla.',
+      'Servir con una infusión, café con leche o té negro.'
+    ],
+    storage: [
+      'A temperatura ambiente en recipiente hermético: hasta 3 días.',
+      'En heladera: hasta 5 días.',
+      'Congelada en porciones individuales: hasta 1 mes.'
+    ],
+    createdAt: new Date().toISOString(),
+    source: {
+      type: 'external',
+      url: 'https://recetas.passwords-generator.net/%f0%9f%8d%8f-tarta-de-manzana-y-almendra-sin-harina-una-delicia-de-otono-que-abraza-el-alma-%f0%9f%8c%b0/#more-1744'
+    }
   }
 
 ];
