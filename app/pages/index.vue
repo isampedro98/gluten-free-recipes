@@ -5,6 +5,8 @@ import type { RecipeCategory } from '~/types/recipe';
 
 const { allRecipes, categories } = useRecipes();
 const baseURL = useRuntimeConfig().app.baseURL || '/';
+const placeholderImage = '/images/placeholder.svg';
+
 const withBase = (path: string) => {
   const cleanBase = baseURL.endsWith('/') ? baseURL.slice(0, -1) : baseURL;
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
@@ -191,7 +193,7 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
           <template #header>
             <div class="relative h-40 w-full overflow-hidden rounded-lg bg-gradient-to-r from-primary-100 to-emerald-100 dark:from-slate-800 dark:to-slate-700">
               <img
-                :src="withBase(recipe.image)"
+                :src="withBase(recipe.image || placeholderImage)"
                 :alt="recipe.name"
                 class="h-full w-full object-cover mix-blend-multiply"
               >
@@ -217,7 +219,16 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
                 {{ recipe.rating.toFixed(1) }}
               </UBadge>
             </div>
-
+            <div class="flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-300">
+              <span v-if="recipe.totalTimeMinutes">
+                ⏱️ {{ recipe.totalTimeMinutes }} min
+              </span>
+              <span v-else-if="recipe.cookTimeMinutes || recipe.prepTimeMinutes">
+                ⏱️ {{ recipe.prepTimeMinutes || 0 }} prep / {{ recipe.cookTimeMinutes || 0 }} cocción
+              </span>
+              <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
+              <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
+            </div>
             <p class="text-sm text-gray-500 dark:text-gray-300 line-clamp-3">
               {{ recipe.description || 'Receta sin descripción.' }}
             </p>

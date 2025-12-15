@@ -7,6 +7,7 @@ const route = useRoute();
 const router = useRouter();
 const { getBySlug } = useRecipes();
 const baseURL = useRuntimeConfig().app.baseURL || '/';
+const placeholderImage = '/images/placeholder.svg';
 const withBase = (path: string) => {
   const cleanBase = baseURL.endsWith('/') ? baseURL.slice(0, -1) : baseURL;
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
@@ -17,6 +18,12 @@ const slug = computed(() => route.params.slug as string);
 const recipe = computed(() => getBySlug(slug.value));
 
 const userRating = ref<number | null>(null);
+const baseURL = useRuntimeConfig().app.baseURL || '/';
+const withBase = (path: string) => {
+  const cleanBase = baseURL.endsWith('/') ? baseURL.slice(0, -1) : baseURL;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${cleanBase}${cleanPath}`;
+};
 
 watchEffect(() => {
   if (!recipe.value) router.replace('/');
@@ -55,7 +62,11 @@ watchEffect(() => {
       <div class="space-y-6">
         <UCard class="glass-card border-none shadow-lg p-0 overflow-hidden">
           <div class="relative h-64">
-            <img :src="withBase(recipe.image)" :alt="recipe.name" class="h-full w-full object-cover mix-blend-multiply">
+            <img
+              :src="withBase(recipe.image || placeholderImage)"
+              :alt="recipe.name"
+              class="h-full w-full object-cover mix-blend-multiply"
+            >
             <div class="absolute inset-0 bg-white/15" />
           </div>
         </UCard>
@@ -77,6 +88,16 @@ watchEffect(() => {
       </div>
       <section class="space-y-3">
         <UCard class="glass-card border-none shadow-lg">
+          <div class="flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-300 mb-3">
+            <span v-if="recipe.totalTimeMinutes">
+              ⏱️ {{ recipe.totalTimeMinutes }} min
+            </span>
+            <span v-else-if="recipe.prepTimeMinutes || recipe.cookTimeMinutes">
+              ⏱️ Prep {{ recipe.prepTimeMinutes || 0 }} / Cocción {{ recipe.cookTimeMinutes || 0 }}
+            </span>
+            <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
+            <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
+          </div>
           <section class="space-y-3">
             <h2 class="text-xl font-semibold">
               Pasos

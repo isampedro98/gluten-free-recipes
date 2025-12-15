@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" role="img" aria-label="Receta sin imagen">
+  <defs>
+    <linearGradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="360" fill="url(#p1)" />
+  <g fill="none" stroke="#0f172a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.2">
+    <rect x="80" y="70" width="440" height="220" rx="24" />
+    <path d="M160 240l70-90 80 110 70-70 70 90" />
+    <circle cx="210" cy="140" r="28" />
+  </g>
+  <text x="50%" y="55%" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="32" fill="#0f172a" opacity="0.6">
+    Imagen no disponible
+  </text>
+</svg>
