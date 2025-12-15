@@ -36,9 +36,13 @@ watchEffect(() => {
             <UBadge color="success" variant="soft">
               {{ recipe.category }}
             </UBadge>
-            <UBadge v-if="recipe.rating" color="warning" variant="soft" class="flex items-center gap-1">
+            <UBadge
+              v-if="recipe.rating"
+              color="warning"
+              variant="soft"
+              class="flex items-center gap-1"
+            >
               <UIcon name="i-lucide-star" />
-              {{ recipe.rating.toFixed(1) }}
             </UBadge>
           </div>
         </div>
@@ -64,44 +68,64 @@ watchEffect(() => {
             <div class="absolute inset-0 bg-white/15" />
           </div>
         </UCard>
-        <!-- Ingredientes -->
+
+        <UCard class="glass-card border-none shadow-lg">
+          <section class="space-y-3">
+            <div class="flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-300">
+              <span v-if="recipe.totalTimeMinutes">
+                ⏱️ {{ recipe.totalTimeMinutes }} min
+              </span>
+              <span v-else-if="recipe.prepTimeMinutes || recipe.cookTimeMinutes">
+                ⏱️ Prep {{ recipe.prepTimeMinutes || 0 }} / Cocción {{ recipe.cookTimeMinutes || 0 }}
+              </span>
+              <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
+              <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
+            </div>
+
+            <h2 class="text-xl font-semibold">
+              Pasos
+            </h2>
+            <ol class="space-y-4 text-gray-700">
+              <li
+                v-for="step in recipe.steps"
+                :key="step.order"
+                class="flex gap-3 items-start"
+              >
+                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-semibold">
+                  {{ step.order }}
+                </span>
+                <div class="flex-1 space-y-2">
+                  <p class="leading-relaxed">
+                    {{ step.text }}
+                  </p>
+                  <div class="h-px bg-gray-200 dark:bg-gray-700" />
+                </div>
+              </li>
+            </ol>
+          </section>
+        </UCard>
+      </div>
+
+      <!-- Ingredientes + rating -->
+      <section class="space-y-3">
         <UCard class="glass-card border-none shadow-lg">
           <h2 class="text-xl font-semibold mb-3">
             Ingredientes
           </h2>
-          <ul class="space-y-3">
-            <li v-for="ingredient in recipe.ingredients" :key="ingredient.name"
-              class="flex items-start justify-between gap-3">
-              <span class="font-medium">{{ ingredient.name }}</span>
+          <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+            <li
+              v-for="ingredient in recipe.ingredients"
+              :key="ingredient.name"
+              class="flex items-center justify-between gap-3 py-2"
+            >
+              <span class="font-medium">
+                {{ ingredient.name.charAt(0).toUpperCase() + ingredient.name.slice(1) }}
+              </span>
               <span class="text-sm text-gray-500">
                 {{ ingredient.quantity }}<span v-if="ingredient.unit"> {{ ingredient.unit }}</span>
               </span>
             </li>
           </ul>
-        </UCard>
-      </div>
-      <section class="space-y-3">
-        <UCard class="glass-card border-none shadow-lg">
-          <div class="flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-300 mb-3">
-            <span v-if="recipe.totalTimeMinutes">
-              ⏱️ {{ recipe.totalTimeMinutes }} min
-            </span>
-            <span v-else-if="recipe.prepTimeMinutes || recipe.cookTimeMinutes">
-              ⏱️ Prep {{ recipe.prepTimeMinutes || 0 }} / Cocción {{ recipe.cookTimeMinutes || 0 }}
-            </span>
-            <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
-            <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
-          </div>
-          <section class="space-y-3">
-            <h2 class="text-xl font-semibold">
-              Pasos
-            </h2>
-            <ol class="space-y-2 list-decimal list-inside text-gray-700">
-              <li v-for="step in recipe.steps" :key="step.order">
-                {{ step.text }}
-              </li>
-            </ol>
-          </section>
         </UCard>
 
         <UCard class="glass-card border-none shadow-lg text-xs text-gray-500 space-y-2">
@@ -114,13 +138,19 @@ watchEffect(() => {
             <h3 class="text-lg font-semibold">Tu calificación</h3>
             <UBadge variant="soft" color="warning" class="flex items-center gap-1">
               <UIcon name="i-lucide-star" />
-              {{ userRating ?? '—' }}
+              <span class="sr-only">Calificar receta</span>
             </UBadge>
           </div>
           <div class="flex gap-2">
-            <UButton v-for="n in 5" :key="n" :color="userRating && userRating >= n ? 'warning' : 'neutral'"
-              variant="ghost" icon="i-lucide-star" @click="userRating = n">
-              {{ n }}
+            <UButton
+              v-for="n in 5"
+              :key="n"
+              :color="userRating && userRating >= n ? 'warning' : 'neutral'"
+              variant="ghost"
+              icon="i-lucide-star"
+              @click="userRating = n"
+            >
+              <span class="sr-only">Calificar {{ n }}</span>
             </UButton>
           </div>
           <p class="text-xs text-gray-500">
