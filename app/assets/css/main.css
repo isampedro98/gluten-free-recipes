@@ -36,10 +36,10 @@
 }
 
 [data-theme="dark"] {
-  background: radial-gradient(circle at 15% 20%, #0f172a 0, #0f172a 30%, transparent 35%),
-    radial-gradient(circle at 80% 0%, #0b3a2c 0, #0b3a2c 35%, transparent 45%),
-    linear-gradient(180deg, #0f172a 0%, #0b1a24 60%, #0a161e 100%);
-  color: #e5e7eb;
+  background: radial-gradient(circle at 10% 20%, #0a0f1a 0, #0a0f1a 30%, transparent 35%),
+    radial-gradient(circle at 85% 0%, #0d2c24 0, #0d2c24 35%, transparent 45%),
+    linear-gradient(180deg, #0b1220 0%, #0c1526 60%, #09101b 100%);
+  color: #e2e8f0;
 }
 
 body {
@@ -54,9 +54,9 @@ body {
 }
 
 [data-theme="dark"] .glass-card {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  background: rgba(17, 24, 39, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
 }
 
 .hero-card {
@@ -64,5 +64,6 @@ body {
 }
 
 [data-theme="dark"] .hero-card {
-  background: linear-gradient(135deg, #0f172a 0%, #0c2d25 50%, #0d2033 100%);
+  background: linear-gradient(135deg, #0f1b2e 0%, #0f2a26 50%, #0f2138 100%);
+  color: #e2e8f0;
 }

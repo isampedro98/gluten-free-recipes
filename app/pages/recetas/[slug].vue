@@ -55,59 +55,9 @@ watchEffect(() => {
       </div>
     </UCard>
 
-    <div class="grid gap-8 md:grid-cols-[2fr,1fr] items-start">
-      <!-- Imagen y pasos -->
-      <div class="space-y-6">
-        <UCard class="glass-card border-none shadow-lg p-0 overflow-hidden">
-          <div class="relative h-64">
-            <img
-              :src="withBase(recipe.image || placeholderImage)"
-              :alt="recipe.name"
-              class="h-full w-full object-cover mix-blend-multiply"
-            >
-            <div class="absolute inset-0 bg-white/15" />
-          </div>
-        </UCard>
-
-        <UCard class="glass-card border-none shadow-lg">
-          <section class="space-y-3">
-            <div class="flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-300">
-              <span v-if="recipe.totalTimeMinutes">
-                ⏱️ {{ recipe.totalTimeMinutes }} min
-              </span>
-              <span v-else-if="recipe.prepTimeMinutes || recipe.cookTimeMinutes">
-                ⏱️ Prep {{ recipe.prepTimeMinutes || 0 }} / Cocción {{ recipe.cookTimeMinutes || 0 }}
-              </span>
-              <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
-              <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
-            </div>
-
-            <h2 class="text-xl font-semibold">
-              Pasos
-            </h2>
-            <ol class="space-y-4 text-gray-700">
-              <li
-                v-for="step in recipe.steps"
-                :key="step.order"
-                class="flex gap-3 items-start"
-              >
-                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-semibold">
-                  {{ step.order }}
-                </span>
-                <div class="flex-1 space-y-2">
-                  <p class="leading-relaxed">
-                    {{ step.text }}
-                  </p>
-                  <div class="h-px bg-gray-200 dark:bg-gray-700" />
-                </div>
-              </li>
-            </ol>
-          </section>
-        </UCard>
-      </div>
-
-      <!-- Ingredientes + rating -->
-      <section class="space-y-3">
+    <div class="grid gap-8 lg:grid-cols-[1.1fr,1.9fr] items-start">
+      <!-- Ingredientes + meta + rating -->
+      <section class="space-y-3 lg:max-w-xl">
         <UCard class="glass-card border-none shadow-lg">
           <h2 class="text-xl font-semibold mb-3">
             Ingredientes
@@ -156,6 +106,56 @@ watchEffect(() => {
           <p class="text-xs text-gray-500">
             (Solo local por ahora; más adelante se persiste en Mongo).
           </p>
+        </UCard>
+      </section>
+
+      <!-- Imagen y pasos -->
+      <section class="space-y-6">
+        <UCard class="glass-card border-none shadow-lg p-0 overflow-hidden">
+          <div class="relative h-64">
+            <img
+              :src="withBase(recipe.image || placeholderImage)"
+              :alt="recipe.name"
+              class="h-full w-full object-cover mix-blend-multiply"
+            >
+            <div class="absolute inset-0 bg-white/15" />
+          </div>
+        </UCard>
+
+        <UCard class="glass-card border-none shadow-lg">
+          <section class="space-y-3">
+            <div class="flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-300">
+              <span v-if="recipe.totalTimeMinutes">
+                ⏱️ {{ recipe.totalTimeMinutes }} min
+              </span>
+              <span v-else-if="recipe.prepTimeMinutes || recipe.cookTimeMinutes">
+                ⏱️ Prep {{ recipe.prepTimeMinutes || 0 }} / Cocción {{ recipe.cookTimeMinutes || 0 }}
+              </span>
+              <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
+              <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
+            </div>
+
+            <h2 class="text-xl font-semibold">
+              Pasos
+            </h2>
+            <ol class="space-y-4 text-gray-700">
+              <li
+                v-for="step in recipe.steps"
+                :key="step.order"
+                class="flex gap-3 items-start"
+              >
+                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-semibold">
+                  {{ step.order }}
+                </span>
+                <div class="flex-1 space-y-2">
+                  <p class="leading-relaxed">
+                    {{ step.text }}
+                  </p>
+                  <div class="h-px bg-gray-200 dark:bg-gray-700" />
+                </div>
+              </li>
+            </ol>
+          </section>
         </UCard>
       </section>
     </div>
