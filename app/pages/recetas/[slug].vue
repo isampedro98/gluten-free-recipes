@@ -55,9 +55,9 @@ watchEffect(() => {
       </div>
     </UCard>
 
-    <div class="grid gap-8 lg:grid-cols-[1.1fr,1.9fr] items-start">
-      <!-- Ingredientes + meta + rating -->
-      <section class="space-y-3 lg:max-w-xl">
+    <div class="grid gap-8 lg:grid-cols-[1.2fr,1.8fr] items-start">
+      <!-- Ingredientes + meta -->
+      <section class="space-y-3">
         <UCard class="glass-card border-none shadow-lg">
           <h2 class="text-xl font-semibold mb-3">
             Ingredientes
@@ -82,37 +82,12 @@ watchEffect(() => {
           <p>Creada: {{ new Date(recipe.createdAt).toLocaleDateString() }}</p>
           <p v-if="recipe.updatedAt">Actualizada: {{ new Date(recipe.updatedAt).toLocaleDateString() }}</p>
         </UCard>
-
-        <UCard class="glass-card border-none shadow-lg space-y-3">
-          <div class="flex items-center gap-2">
-            <h3 class="text-lg font-semibold">Tu calificación</h3>
-            <UBadge variant="soft" color="warning" class="flex items-center gap-1">
-              <UIcon name="i-lucide-star" />
-              <span class="sr-only">Calificar receta</span>
-            </UBadge>
-          </div>
-          <div class="flex gap-2">
-            <UButton
-              v-for="n in 5"
-              :key="n"
-              :color="userRating && userRating >= n ? 'warning' : 'neutral'"
-              variant="ghost"
-              icon="i-lucide-star"
-              @click="userRating = n"
-            >
-              <span class="sr-only">Calificar {{ n }}</span>
-            </UButton>
-          </div>
-          <p class="text-xs text-gray-500">
-            (Solo local por ahora; más adelante se persiste en Mongo).
-          </p>
-        </UCard>
       </section>
 
-      <!-- Imagen y pasos -->
+      <!-- Imagen -->
       <section class="space-y-6">
         <UCard class="glass-card border-none shadow-lg p-0 overflow-hidden">
-          <div class="relative h-64">
+          <div class="relative h-80 md:h-96">
             <img
               :src="withBase(recipe.image || placeholderImage)"
               :alt="recipe.name"
@@ -121,43 +96,71 @@ watchEffect(() => {
             <div class="absolute inset-0 bg-white/15" />
           </div>
         </UCard>
-
-        <UCard class="glass-card border-none shadow-lg">
-          <section class="space-y-3">
-            <div class="flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-300">
-              <span v-if="recipe.totalTimeMinutes">
-                ⏱️ {{ recipe.totalTimeMinutes }} min
-              </span>
-              <span v-else-if="recipe.prepTimeMinutes || recipe.cookTimeMinutes">
-                ⏱️ Prep {{ recipe.prepTimeMinutes || 0 }} / Cocción {{ recipe.cookTimeMinutes || 0 }}
-              </span>
-              <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
-              <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
-            </div>
-
-            <h2 class="text-xl font-semibold">
-              Pasos
-            </h2>
-            <ol class="space-y-4 text-gray-700">
-              <li
-                v-for="step in recipe.steps"
-                :key="step.order"
-                class="flex gap-3 items-start"
-              >
-                <span class="w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-semibold">
-                  {{ step.order }}
-                </span>
-                <div class="flex-1 space-y-2">
-                  <p class="leading-relaxed">
-                    {{ step.text }}
-                  </p>
-                  <div class="h-px bg-gray-200 dark:bg-gray-700" />
-                </div>
-              </li>
-            </ol>
-          </section>
-        </UCard>
       </section>
+    </div>
+
+    <!-- Pasos y rating -->
+    <div class="space-y-6">
+      <UCard class="glass-card border-none shadow-lg">
+        <section class="space-y-3">
+          <div class="flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-300">
+            <span v-if="recipe.totalTimeMinutes">
+              ⏱️ {{ recipe.totalTimeMinutes }} min
+            </span>
+            <span v-else-if="recipe.prepTimeMinutes || recipe.cookTimeMinutes">
+              ⏱️ Prep {{ recipe.prepTimeMinutes || 0 }} / Cocción {{ recipe.cookTimeMinutes || 0 }}
+            </span>
+            <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
+            <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
+          </div>
+
+          <h2 class="text-xl font-semibold">
+            Pasos
+          </h2>
+          <ol class="space-y-4 text-gray-700">
+            <li
+              v-for="step in recipe.steps"
+              :key="step.order"
+              class="flex gap-3 items-start"
+            >
+              <span class="w-8 h-8 flex items-center justify-center rounded-full bg-primary-100 text-primary-700 font-semibold">
+                {{ step.order }}
+              </span>
+              <div class="flex-1 space-y-2">
+                <p class="leading-relaxed">
+                  {{ step.text }}
+                </p>
+                <div class="h-px bg-gray-200 dark:bg-gray-700" />
+              </div>
+            </li>
+          </ol>
+        </section>
+      </UCard>
+
+      <UCard class="glass-card border-none shadow-lg space-y-3">
+        <div class="flex items-center gap-2">
+          <h3 class="text-lg font-semibold">Tu calificación</h3>
+          <UBadge variant="soft" color="warning" class="flex items-center gap-1">
+            <UIcon name="i-lucide-star" />
+            <span class="sr-only">Calificar receta</span>
+          </UBadge>
+        </div>
+        <div class="flex gap-2">
+          <UButton
+            v-for="n in 5"
+            :key="n"
+            :color="userRating && userRating >= n ? 'warning' : 'neutral'"
+            variant="ghost"
+            icon="i-lucide-star"
+            @click="userRating = n"
+          >
+            <span class="sr-only">Calificar {{ n }}</span>
+          </UButton>
+        </div>
+        <p class="text-xs text-gray-500">
+          (Solo local por ahora; más adelante se persiste en Mongo).
+        </p>
+      </UCard>
     </div>
   </UContainer>
 </template>
