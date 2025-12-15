@@ -12,7 +12,9 @@ const DEFAULT_CATEGORIES: RecipeCategory[] = [
 ];
 
 export function useRecipes() {
-  const allRecipes = computed<Recipe[]>(() => recipes);
+  const allRecipes = computed<Recipe[]>(() =>
+    recipes.filter(recipe => recipe.source.type !== 'demo')
+  );
 
   const categories = computed<RecipeCategory[]>(() => {
     const set = new Set<RecipeCategory>(DEFAULT_CATEGORIES);

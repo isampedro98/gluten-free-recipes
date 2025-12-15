@@ -18,12 +18,6 @@ const slug = computed(() => route.params.slug as string);
 const recipe = computed(() => getBySlug(slug.value));
 
 const userRating = ref<number | null>(null);
-const baseURL = useRuntimeConfig().app.baseURL || '/';
-const withBase = (path: string) => {
-  const cleanBase = baseURL.endsWith('/') ? baseURL.slice(0, -1) : baseURL;
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${cleanBase}${cleanPath}`;
-};
 
 watchEffect(() => {
   if (!recipe.value) router.replace('/');
