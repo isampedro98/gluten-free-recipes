@@ -55,7 +55,7 @@ watchEffect(() => {
       </div>
     </UCard>
 
-    <div class="grid gap-8 lg:grid-cols-[1.2fr,1.8fr] items-start">
+    <div class="grid gap-8 lg:grid-cols-2 items-start">
       <!-- Ingredientes -->
       <section class="space-y-3">
         <UCard class="glass-card border-none shadow-lg">
@@ -85,15 +85,14 @@ watchEffect(() => {
       </section>
 
       <!-- Imagen -->
-      <section class="space-y-6">
+      <section class="space-y-3">
         <UCard class="glass-card border-none shadow-lg p-0 overflow-hidden">
           <div class="relative h-80 md:h-96">
             <img
               :src="withBase(recipe.image || placeholderImage)"
               :alt="recipe.name"
-              class="h-full w-full object-cover mix-blend-multiply"
+              class="h-full w-full object-cover"
             >
-            <div class="absolute inset-0 bg-white/15" />
           </div>
         </UCard>
       </section>
