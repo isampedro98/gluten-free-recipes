@@ -35,11 +35,12 @@
   color: #1f2933;
 }
 
+.dark,
 [data-theme="dark"] {
-  background: radial-gradient(circle at 10% 20%, #0a0f1a 0, #0a0f1a 30%, transparent 35%),
-    radial-gradient(circle at 85% 0%, #0d2c24 0, #0d2c24 35%, transparent 45%),
-    linear-gradient(180deg, #0b1220 0%, #0c1526 60%, #09101b 100%);
-  color: #e2e8f0;
+  background: radial-gradient(circle at 10% 20%, #0b1220 0, #0b1220 30%, transparent 35%),
+    radial-gradient(circle at 80% 0%, #0f2f29 0, #0f2f29 35%, transparent 45%),
+    linear-gradient(180deg, #0a0f1a 0%, #0b1522 60%, #050910 100%);
+  color: #e5e7eb;
 }
 
 body {
@@ -53,17 +54,26 @@ body {
   backdrop-filter: blur(10px);
 }
 
+.dark .glass-card,
 [data-theme="dark"] .glass-card {
-  background: rgba(17, 24, 39, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.55);
 }
 
 .hero-card {
   background: linear-gradient(135deg, #fff7ec 0%, #f0fff4 50%, #e8f5ff 100%);
 }
 
+.dark .hero-card,
 [data-theme="dark"] .hero-card {
-  background: linear-gradient(135deg, #0f1b2e 0%, #0f2a26 50%, #0f2138 100%);
-  color: #e2e8f0;
+  background: linear-gradient(135deg, #0f1b2e 0%, #0e2622 50%, #0d1d31 100%);
+  color: #f1f5f9;
+}
+
+.dark header,
+.dark .u-header {
+  background: rgba(10, 15, 26, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
 }
