@@ -16,21 +16,25 @@ const withBase = (path: string) => {
 const searchName = ref('');
 const searchIngredient = ref('');
 const selectedCategory = ref<RecipeCategory | ''>('');
-const sortBy = ref<'rating' | 'newest' | 'name'>('rating');
+
+type SortValue = 'rating_desc' | 'newest_desc' | 'name_asc';
 
 interface SortOption {
   label: string;
-  value: 'rating' | 'newest' | 'name';
+  value: SortValue;
+  helper: string;
 }
 
-const sortOptions: SortOption[] = [
-  { label: 'Mejor calificación', value: 'rating' },
-  { label: 'Más recientes', value: 'newest' },
-  { label: 'Nombre A-Z', value: 'name' }
-];
+const sortOptions = [
+  { label: 'Mayor rating (desc)', value: 'rating_desc', helper: 'Primero las recetas mejor valoradas' },
+  { label: 'Mas nuevos primero', value: 'newest_desc', helper: 'Ordenados por fecha de carga' },
+  { label: 'Nombre A-Z', value: 'name_asc', helper: 'Orden alfabetico ascendente' }
+] satisfies readonly [SortOption, ...SortOption[]];
+
+const sortBy = ref<SortValue>(sortOptions[0].value);
 
 const categoryOptions = computed(() => [
-  { label: 'Todas', value: '' },
+  { label: 'Todas', value: 'invalid' },
   ...categories.value.map(cat => ({ label: cat, value: cat }))
 ]);
 
@@ -61,14 +65,16 @@ const filteredRecipes = computed(() => {
 const orderedRecipes = computed(() => {
   const list = [...filteredRecipes.value];
 
-  if (sortBy.value === 'rating') {
+  if (sortBy.value === 'rating_desc') {
     return list.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
   }
 
-  if (sortBy.value === 'newest') {
-    return list.sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+  if (sortBy.value === 'newest_desc') {
+    return list.sort((a, b) => {
+      const dateA = new Date(a.createdAt ?? 0).getTime();
+      const dateB = new Date(b.createdAt ?? 0).getTime();
+      return dateB - dateA;
+    });
   }
 
   return list.sort((a, b) => a.name.localeCompare(b.name));
@@ -94,13 +100,13 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
       <UCard class="glass-card p-6 hero-card border-none shadow-lg">
         <div class="space-y-3">
           <p class="text-sm uppercase tracking-wide text-primary-700">
-            Recetario estético
+            Recetario estatico
           </p>
           <h1 class="text-3xl font-bold text-primary-900 dark:text-primary-50">
             Recetas sin gluten
           </h1>
           <p class="text-gray-600 dark:text-gray-200 text-base">
-            Explorá recetas 100% sin gluten, filtrá por categoría e ingredientes y descubrí nuevas ideas deliciosas.
+            Explora recetas 100% sin gluten, filtra por categoria e ingredientes y descubre nuevas ideas deliciosas.
           </p>
           <div class="flex flex-wrap gap-2">
             <UBadge color="success" variant="soft"> Filtrado avanzado </UBadge>
@@ -120,51 +126,43 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
             <div class="grid gap-3 md:grid-cols-[2fr,1fr]">
               <div class="space-y-1">
                 <p class="text-xs font-semibold text-gray-500 dark:text-gray-300">
-                  Nombre / descripción
+                  Nombre / descripcion
                 </p>
-                <UInput
-                  v-model="searchName"
-                  placeholder="Ej: pizza, pan, tarta..."
-                  icon="i-lucide-search"
-                />
+                <UInput v-model="searchName" placeholder="Ej: pizza, pan, tarta..." icon="i-lucide-search" />
               </div>
               <div class="space-y-1">
                 <p class="text-xs font-semibold text-gray-500 dark:text-gray-300">
                   Ordenar
                 </p>
-                <USelectMenu
-                  v-model="sortBy"
-                  :options="sortOptions"
-                  placeholder="Elegí el orden"
-                  icon="i-lucide-sort-desc"
-                  :searchable="false"
-                />
+                <USelectMenu v-model="sortBy" :items="sortOptions" value-key="value" label-key="label"
+                  :search-input="false" icon="i-lucide-sort-desc">
+                  <template #item-label="{ item }">
+                    <div class="flex flex-col">
+                      <span>{{ item.label }}</span>
+                      <span class="text-xs text-gray-500 dark:text-gray-400">
+                        {{ item.helper }}
+                      </span>
+                    </div>
+                  </template>
+                </USelectMenu>
               </div>
             </div>
 
             <div class="grid gap-3 md:grid-cols-3">
               <div class="space-y-1">
                 <p class="text-xs font-semibold text-gray-500 dark:text-gray-300">
-                  Categoría
+                  Categoria
                 </p>
-                <USelectMenu
-                  v-model="selectedCategory"
-                  :options="categoryOptions"
-                  placeholder="Todas"
-                  icon="i-lucide-filter"
-                  :searchable="false"
-                />
+                <USelectMenu v-model="selectedCategory" :items="categoryOptions" value-key="value" label-key="label"
+                  placeholder="Todas" icon="i-lucide-filter" :search-input="false" />
               </div>
 
               <div class="space-y-1 md:col-span-2">
                 <p class="text-xs font-semibold text-gray-500 dark:text-gray-300">
                   Ingrediente
                 </p>
-                <UInput
-                  v-model="searchIngredient"
-                  placeholder="Ej: arroz, pollo, zanahoria..."
-                  icon="i-lucide-sparkles"
-                />
+                <UInput v-model="searchIngredient" placeholder="Ej: arroz, pollo, zanahoria..."
+                  icon="i-lucide-sparkles" />
               </div>
             </div>
           </div>
@@ -174,33 +172,20 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
 
     <!-- Listado -->
     <section>
-      <div
-        v-if="paginatedRecipes.length === 0"
-        class="py-20 text-center text-gray-500"
-      >
+      <div v-if="paginatedRecipes.length === 0" class="py-20 text-center text-gray-500">
         No se encontraron recetas con esos filtros.
       </div>
 
-      <div
-        v-else
-        class="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
-      >
-        <NuxtLink
-          v-for="recipe in paginatedRecipes"
-          :key="recipe.id"
-          :to="`/recetas/${recipe.slug}`"
-          class="block group"
-        >
+      <div v-else class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <NuxtLink v-for="recipe in paginatedRecipes" :key="recipe.id" :to="`/recetas/${recipe.slug}`"
+          class="block group">
           <UCard
-            class="flex flex-col glass-card border-none shadow-lg hover:-translate-y-1 transition-transform duration-200"
-          >
+            class="flex flex-col glass-card border-none shadow-lg hover:-translate-y-1 transition-transform duration-200">
             <template #header>
-              <div class="relative h-40 w-full overflow-hidden rounded-lg bg-gradient-to-r from-primary-100 to-emerald-100 dark:from-slate-800 dark:to-slate-700">
-                <img
-                  :src="withBase(recipe.image || placeholderImage)"
-                  :alt="recipe.name"
-                  class="h-full w-full object-cover mix-blend-multiply"
-                >
+              <div
+                class="relative h-40 w-full overflow-hidden rounded-lg bg-linear-to-r from-primary-100 to-emerald-100 dark:from-slate-800 dark:to-slate-700">
+                <img :src="withBase(recipe.image || placeholderImage)" :alt="recipe.name"
+                  class="h-full w-full object-cover mix-blend-multiply">
                 <div class="absolute inset-0 bg-white/20 dark:bg-black/20" />
               </div>
             </template>
@@ -213,28 +198,23 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
                 <UBadge color="success" variant="soft">
                   {{ recipe.category }}
                 </UBadge>
-                <UBadge
-                  v-if="recipe.rating"
-                  color="warning"
-                  variant="soft"
-                  class="flex items-center gap-1"
-                >
+                <UBadge v-if="recipe.rating" color="warning" variant="soft" class="flex items-center gap-1">
                   <UIcon name="i-lucide-star" />
                   {{ recipe.rating.toFixed(1) }}
                 </UBadge>
               </div>
               <div class="flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-300">
                 <span v-if="recipe.totalTimeMinutes">
-                  ⏱️ {{ recipe.totalTimeMinutes }} min
+                  Tiempo total {{ recipe.totalTimeMinutes }} min
                 </span>
                 <span v-else-if="recipe.cookTimeMinutes || recipe.prepTimeMinutes">
-                  ⏱️ {{ recipe.prepTimeMinutes || 0 }} prep / {{ recipe.cookTimeMinutes || 0 }} cocción
+                  Tiempo {{ recipe.prepTimeMinutes || 0 }} prep / {{ recipe.cookTimeMinutes || 0 }} coccion
                 </span>
-                <span v-if="recipe.servings">🍽️ {{ recipe.servings }} porciones</span>
-                <span v-if="recipe.difficulty">⚡ {{ recipe.difficulty }}</span>
+                <span v-if="recipe.servings">Porciones {{ recipe.servings }}</span>
+                <span v-if="recipe.difficulty">Dificultad {{ recipe.difficulty }}</span>
               </div>
               <p class="text-sm text-gray-500 dark:text-gray-300 line-clamp-3">
-                {{ recipe.description || 'Receta sin descripción.' }}
+                {{ recipe.description || 'Receta sin descripcion.' }}
               </p>
             </div>
 
@@ -244,7 +224,7 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
                   {{ recipe.ingredients.length }} ingredientes
                 </span>
                 <span class="text-xs text-primary-600 dark:text-primary-200 group-hover:underline">
-                  Ver receta →
+                  Ver receta >
                 </span>
               </div>
             </template>
@@ -253,22 +233,15 @@ watch([searchName, searchIngredient, selectedCategory, sortBy], () => {
       </div>
     </section>
 
-    <!-- Paginación -->
-    <section
-      v-if="totalPages > 1"
-      class="flex justify-center"
-    >
-      <UPagination
-        v-model="page"
-        :page-count="pageSize"
-        :total="filteredRecipes.length"
-      />
+    <!-- Paginacion -->
+    <section v-if="totalPages > 1" class="flex justify-center">
+      <UPagination v-model="page" :page-count="pageSize" :total="filteredRecipes.length" />
     </section>
 
     <!-- Link al creador -->
     <footer class="pt-8 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
       <span class="text-sm text-gray-500 dark:text-gray-300">
-        ¿Tenés una receta nueva?
+        Tienes una receta nueva?
       </span>
       <NuxtLink to="/recetas/crear">
         <UButton variant="outline" size="sm">
